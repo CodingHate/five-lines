@@ -8,7 +8,7 @@ me
 하드 코딩을 피하기 위해서 늦은바인딩(동적바인딩)을 통하여 조건을 만든다.   
 enum대신 interface를 만들고 각 동작에 대해서 컴퍼넌트로 연결 하여 조건을 만들어 준다.   
 
-'''ts
+```ts
 interface Input
 {
   isRight():boolean;
@@ -32,4 +32,4 @@ class Right implements Input
     return false;
   }
 }
-'''
+```
