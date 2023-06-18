@@ -33,3 +33,13 @@ class Right implements Input
   }
 }
 ```
+
+늦은 바인딩은 다음과 같이 구현을 하였다.
+```ts
+window.addEventListener("keydown", e => {
+  if (e.key === LEFT_KEY || e.key === "a") inputs.push(new Left());
+  else if (e.key === UP_KEY || e.key === "w") inputs.push(new Up());
+  else if (e.key === RIGHT_KEY || e.key === "d") inputs.push(new Right());
+  else if (e.key === DOWN_KEY || e.key === "s") inputs.push(new Down());
+});
+```
