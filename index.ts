@@ -81,6 +81,12 @@ function moveVertical(dy: number) {
 }
 
 function update() {
+  handleInpue();
+  updateMap();
+}
+
+function handleInpue()
+{
   while (inputs.length > 0) {
     let current = inputs.pop();
     if (current === Input.LEFT)
@@ -92,10 +98,20 @@ function update() {
     else if (current === Input.DOWN)
       moveVertical(1);
   }
+}
 
+function updateMap()
+{
   for (let y = map.length - 1; y >= 0; y--) {
     for (let x = 0; x < map[y].length; x++) {
-      if ((map[y][x] === Tile.STONE || map[y][x] === Tile.FALLING_STONE)
+      updateTitle(x,y);
+    }
+  }
+}
+
+function updateTitle(x:number, y:number)
+{
+  if ((map[y][x] === Tile.STONE || map[y][x] === Tile.FALLING_STONE)
         && map[y + 1][x] === Tile.AIR) {
         map[y + 1][x] = Tile.FALLING_STONE;
         map[y][x] = Tile.AIR;
@@ -108,17 +124,28 @@ function update() {
       } else if (map[y][x] === Tile.FALLING_BOX) {
         map[y][x] = Tile.BOX;
       }
-    }
-  }
+}
+
+function createGraphics(){
+  
+  let canvas = document.getElementById("GameCanvas") as HTMLCanvasElement;
+  let g = canvas.getContext("2d");
+  
+  g.clearRect(0, 0, canvas.width, canvas.height);
+
+  return g;
 }
 
 function draw() {
-  let canvas = document.getElementById("GameCanvas") as HTMLCanvasElement;
-  let g = canvas.getContext("2d");
-
-  g.clearRect(0, 0, canvas.width, canvas.height);
-
+  let g = createGraphics();
   // Draw map
+  drwaMap(g);
+  // Draw player
+  drawPlayer(g);
+}
+
+function drwaMap(g:CanvasRenderingContext2D)
+{
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
       if (map[y][x] === Tile.FLUX)
@@ -133,15 +160,19 @@ function draw() {
         g.fillStyle = "#ffcc00";
       else if (map[y][x] === Tile.KEY2 || map[y][x] === Tile.LOCK2)
         g.fillStyle = "#00ccff";
-
+  
       if (map[y][x] !== Tile.AIR && map[y][x] !== Tile.PLAYER)
         g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
   }
+  
+}
 
-  // Draw player
+
+function drawPlayer(g:CanvasRenderingContext2D)
+{
   g.fillStyle = "#ff0000";
-  g.fillRect(playerx * TILE_SIZE, playery * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  g.fillRect(playerx * TILE_SIZE, playery * TILE_SIZE, TILE_SIZE, TILE_SIZE);  
 }
 
 function gameLoop() {
