@@ -1,28 +1,35 @@
-# five-lines
+# chap 04 _ 타입 코드 처리하기
 
-In this kata your task is to refactor the code for a small game. When finished it should be easy to add new tile types, or make the key draw as a circle, so we can easily distinguish it from the lock. 
+## if-else
+if-else는 하드코딩된 결정으로 볼 수 있습니다.   
+코드에서 하드코딩된 상수가 좋지 않느 ㄴ것처럼 하드코딩된 결정도 좋지 않습니다.   
 
-The code already abides by the most common principles "Don't Repeat Yourself", "Keep It Simple, Stupid", and there are only very few magic literals. There are no poorly structured nor deeply nested `if`s.
+me   
+하드 코딩을 피하기 위해서 늦은바인딩(동적바인딩)을 통하여 조건을 만든다.   
+enum대신 interface를 만들고 각 동작에 대해서 컴퍼넌트로 연결 하여 조건을 만들어 준다.   
 
-This is *not* an easy exercise.
+'''ts
+interface Input
+{
+  isRight():boolean;
+  isLeft():boolean;
+  isUp():boolean;
+  isDown():boolean;
+}
 
-# About the Game
-In the game, you are a red square and have to get the box (brown) to the lower right corner. Obstacles include falling stones (blue), walls (gray), and a lock (yellow, right) that can be unlocked with the key (yellow, left). You can push one stone or box at a time, and only if it is not falling. The flux (greenish) holds up boxes and stones but can be 'eaten' by the player. 
-
-![Screenshot of the game](game.png)
-
-# How to Build It
-Assuming that you have the Typescript compiler installed: Open a terminal in this directory, then run `tsc`. There should now be a `index.js` file in this directory.
-
-# How to Run It
-To run the game you need to first build it, see above. Then simply open `index.html` in a browser. Use the arrows to move the player.
-
-# Thank You!
-If you like this kata please consider giving the repo a star. You might also consider purchasing a copy of my book where I show a simple way to tackle code like this: [Five Lines of Code](https://www.manning.com/books/five-lines-of-code), available through the Manning Early Access Program.
-
-[![Five Lines of Code](frontpage.png)](https://www.manning.com/books/five-lines-of-code)
-
-If you have feedback or comments on this repo don't hesitate to write me a message or send me a pull request. 
-
-Thank you for checking it out.
-
+class Right implements Input
+{
+  isRight(): boolean {
+    return true;
+  }
+  isLeft(): boolean {
+    return false;
+  }
+  isUp(): boolean {
+    return false;
+  }
+  isDown(): boolean {
+    return false;
+  }
+}
+'''
