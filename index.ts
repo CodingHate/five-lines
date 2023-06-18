@@ -20,70 +20,32 @@ enum RawInput {
 
 interface Input
 {
-  isRight():boolean;
-  isLeft():boolean;
-  isUp():boolean;
-  isDown():boolean;
+  handle():void
 }
 
 class Right implements Input
 {
-  isRight(): boolean {
-    return true;
+  handle(){
+    moveHorizontal(1);
   }
-  isLeft(): boolean {
-    return false;
-  }
-  isUp(): boolean {
-    return false;
-  }
-  isDown(): boolean {
-    return false;
-  }
+
 }
 class Left implements Input
 {
-  isRight(): boolean {
-    return false;
-  }
-  isLeft(): boolean {
-    return true;
-  }
-  isUp(): boolean {
-    return false;
-  }
-  isDown(): boolean {
-    return false;
+  handle(){
+    moveHorizontal(-1);
   }
 }
 class Up implements Input
 {
-  isRight(): boolean {
-    return false;
-  }
-  isLeft(): boolean {
-    return false;
-  }
-  isUp(): boolean {
-    return true;
-  }
-  isDown(): boolean {
-    return false;
+  handle(){
+    moveVertical(-1);
   }
 }
 class Down implements Input
 {
-  isRight(): boolean {
-    return false;
-  }
-  isLeft(): boolean {
-    return false;
-  }
-  isUp(): boolean {
-    return false;
-  }
-  isDown(): boolean {
-    return true;
+  handle(){
+    moveVertical(1);
   }
 }
 
@@ -164,14 +126,15 @@ function handleInputs()
 
 function handleInput(input: Input)
 {
-  if (input.isLeft())
-    moveHorizontal(-1);
-  else if (input.isRight())
-    moveHorizontal(1);
-  else if (input.isUp())
-    moveVertical(-1);
-  else if (input.isDown())
-    moveVertical(1);
+  input.handle();
+  // if (input.isLeft())
+  //   moveHorizontal(-1);
+  // else if (input.isRight())
+  //   moveHorizontal(1);
+  // else if (input.isUp())
+  //   moveVertical(-1);
+  // else if (input.isDown())
+  //   moveVertical(1);
 }
 
 
