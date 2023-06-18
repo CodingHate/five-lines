@@ -28,8 +28,8 @@ class Right implements Input
   handle(){
     moveHorizontal(1);
   }
-
 }
+
 class Left implements Input
 {
   handle(){
