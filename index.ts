@@ -127,6 +127,9 @@ function handleInputs()
 function handleInput(input: Input)
 {
   input.handle();
+
+  /* if else 모두 삭제 */
+  
   // if (input.isLeft())
   //   moveHorizontal(-1);
   // else if (input.isRight())
