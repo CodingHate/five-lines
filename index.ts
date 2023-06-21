@@ -122,7 +122,7 @@ function handleInputs()
     // let current = inputs.pop();
     // handleInput(current);
     let input = inputs.pop();
-    input.handle();
+    input.handle();  // inline화
   }
 }
 
@@ -142,6 +142,349 @@ function handleInputs()
 //   //   moveVertical(1);
 // }
 
+
+interface Title2{
+  insFlux():boolean;
+  isUnbreakable():boolean;
+  isStone():boolean;
+  isFallingStone():boolean;
+  isBox():boolean;
+  isFallingBox():boolean;
+  isKey1():boolean;
+  isKey2():boolean;
+  isLock1():boolean;
+  isLock2():boolean;
+}
+
+class Unbreakable implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return true;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Flux implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Stone implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return true;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class FallingStone implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return true;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Box implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return true;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class FallingBox implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return true;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Key1 implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return true;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Key2 implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return true;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Lock1 implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return true;
+  }
+  isLock2(){
+    return false;
+  }
+}
+
+class Lock2 implements Title2{
+  insFlux(){
+    return false;
+  }
+  isUnbreakable(){
+    return false;
+  }
+  isStone(){
+    return false;
+  }
+  isFallingStone(){
+    return false;
+  }
+  isBox(){
+    return false;
+  }
+  isFallingBox(){
+    return false;
+  }
+  isKey1(){
+    return false;
+  }
+  isKey2(){
+    return false;
+  }
+  isLock1(){
+    return false;
+  }
+  isLock2(){
+    return true;
+  }
+}
 
 function updateMap()
 {
