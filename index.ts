@@ -119,26 +119,28 @@ function update() {
 function handleInputs()
 {
   while (inputs.length > 0) {
-    let current = inputs.pop();
-    handleInput(current);
+    // let current = inputs.pop();
+    // handleInput(current);
+    let input = inputs.pop();
+    input.handle();
   }
 }
 
-function handleInput(input: Input)
-{
-  input.handle();
+// function handleInput(input: Input)
+// {
+//   input.handle();
 
-  /* if else 모두 삭제 */
+//   /* if else 모두 삭제 */
   
-  // if (input.isLeft())
-  //   moveHorizontal(-1);
-  // else if (input.isRight())
-  //   moveHorizontal(1);
-  // else if (input.isUp())
-  //   moveVertical(-1);
-  // else if (input.isDown())
-  //   moveVertical(1);
-}
+//   // if (input.isLeft())
+//   //   moveHorizontal(-1);
+//   // else if (input.isRight())
+//   //   moveHorizontal(1);
+//   // else if (input.isUp())
+//   //   moveVertical(-1);
+//   // else if (input.isDown())
+//   //   moveVertical(1);
+// }
 
 
 function updateMap()
