@@ -2,6 +2,20 @@ const TILE_SIZE = 30;
 const FPS = 30;
 const SLEEP = 1000 / FPS;
 
+let playerx = 1;
+let playery = 1;
+let rawmap: RawTile[][] = [
+  [2, 2, 2, 2, 2, 2, 2, 2],
+  [2, 3, 0, 1, 1, 2, 0, 2],
+  [2, 4, 2, 6, 1, 2, 0, 2],
+  [2, 8, 4, 1, 1, 2, 0, 2],
+  [2, 4, 1, 1, 1, 9, 0, 2],
+  [2, 2, 2, 2, 2, 2, 2, 2],
+];
+let map: Tile[][];
+
+let inputs: Input[] = [];
+
 enum RawTile {
   AIR,
   FLUX,
@@ -16,14 +30,12 @@ enum RawTile {
   KEY2,
   LOCK2,
 }
-
 enum RawInput {
   UP,
   DOWN,
   LEFT,
   RIGHT,
 }
-
 interface Input {
   handle(): void;
 }
@@ -33,7 +45,6 @@ class Right implements Input {
     moveHorizontal(1);
   }
 }
-
 class Left implements Input {
   handle() {
     moveHorizontal(-1);
@@ -49,18 +60,6 @@ class Down implements Input {
     moveVertical(1);
   }
 }
-
-let playerx = 1;
-let playery = 1;
-let rawmap: RawTile[][] = [
-  [2, 2, 2, 2, 2, 2, 2, 2],
-  [2, 3, 0, 1, 1, 2, 0, 2],
-  [2, 4, 2, 6, 1, 2, 0, 2],
-  [2, 8, 4, 1, 1, 2, 0, 2],
-  [2, 4, 1, 1, 1, 9, 0, 2],
-  [2, 2, 2, 2, 2, 2, 2, 2],
-];
-let map: Tile[][];
 
 function assertExhausted(x: never): never {
   throw new Error("Unexpected object: " + x);
@@ -104,8 +103,6 @@ function transformMap() {
     }
   }
 }
-
-let inputs: Input[] = [];
 
 function removeLock1() {
   for (let y = 0; y < map.length; y++) {
