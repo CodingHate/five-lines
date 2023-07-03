@@ -443,7 +443,11 @@ class Stone implements Tile {
   isPushable(): boolean {
     return false;
   }
-  moveHorizontal(dx: number): void {}
+  moveHorizontal(dx: number): void {
+    if (map[playery][playerx + dx].isEdible()) {
+      moveToTile(playerx + dx, playery);
+    }
+  }
 }
 
 class FallingStone implements Tile {
