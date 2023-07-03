@@ -444,8 +444,14 @@ class Stone implements Tile {
     return false;
   }
   moveHorizontal(dx: number): void {
-    if (map[playery][playerx + dx].isEdible()) {
-      moveToTile(playerx + dx, playery);
+    if (this.isFallingStone() == false) {
+      if (
+        map[playery][playerx + dx].isAir() &&
+        map[playery + 1][playerx + dx].isAir()
+      ) {
+        map[playery][playerx + dx + dx] = this;
+        moveToTile(playerx + dx, playery);
+      }
     }
   }
 }
@@ -500,7 +506,10 @@ class FallingStone implements Tile {
   isPushable(): boolean {
     return false;
   }
-  moveHorizontal(dx: number): void {}
+  moveHorizontal(dx: number): void {
+    if (this.isFallingStone() == true) {
+    }
+  }
 }
 
 class Box implements Tile {
@@ -825,22 +834,16 @@ class Lock2 implements Tile {
 function updateMap() {
   for (let y = map.length - 1; y >= 0; y--) {
     for (let x = 0; x < map[y].length; x++) {
-      updateTitle(x, y);
+      updateTile(x, y);
     }
   }
 }
 
-function updateTitle(x: number, y: number) {
-  if (
-    (map[y][x].isStone() || map[y][x].isFallingStone()) &&
-    map[y + 1][x].isAir()
-  ) {
+function updateTile(x: number, y: number) {
+  if (map[y][x].isStone() && map[y + 1][x].isAir()) {
     map[y + 1][x] = new FallingStone();
     map[y][x] = new Air();
-  } else if (
-    (map[y][x].isBox() || map[y][x].isFallingBox()) &&
-    map[y + 1][x].isAir()
-  ) {
+  } else if (map[y][x].isBox() && map[y + 1][x].isAir()) {
     map[y + 1][x] = new FallingBox();
     map[y][x] = new Air();
   } else if (map[y][x].isFallingStone()) {
