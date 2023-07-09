@@ -36,6 +36,41 @@ enum RawInput {
   LEFT,
   RIGHT,
 }
+
+interface FallingState {
+  isFalling(): boolean;
+  isResting(): boolean;
+  moveHorizontal(tile: Tile, dx: number): void;
+}
+
+class Falling implements FallingState {
+  moveHorizontal(tile: Tile, dx: number): void {}
+  isFalling(): boolean {
+    return true;
+  }
+  isResting(): boolean {
+    return false;
+  }
+}
+
+class Resting implements FallingState {
+  moveHorizontal(tile: Tile, dx: number): void {
+    if (
+      map[playery][playery + dx + dx].isAir() &&
+      !map[playery + 1][playerx + dx].isAir()
+    ) {
+      map[playery][playerx + dx + dx] = tile;
+      moveToTile(playerx + dx, playery);
+    }
+  }
+  isFalling(): boolean {
+    return false;
+  }
+  isResting(): boolean {
+    return true;
+  }
+}
+
 interface Input {
   handle(): void;
 }
@@ -74,7 +109,7 @@ function transformTile(title: RawTile) {
     case RawTile.FALLING_BOX:
       return new FallingBox();
     case RawTile.FALLING_STONE:
-      return new FallingStone(false);
+      return new Stone(new Resting());
     case RawTile.FLUX:
       return new Flux();
     case RawTile.KEY1:
@@ -88,7 +123,7 @@ function transformTile(title: RawTile) {
     case RawTile.PLAYER:
       return new Player();
     case RawTile.STONE:
-      return new Stone(false);
+      return new Stone(new Resting());
     case RawTile.UNBREAKABLE:
       return new Unbreakable();
   }
@@ -395,8 +430,7 @@ class Flux implements Tile {
 }
 
 class Stone implements Tile {
-  private falling: boolean;
-  constructor(falling: boolean) {
+  constructor(private falling: FallingState) {
     this.falling = falling;
   }
 
@@ -416,7 +450,7 @@ class Stone implements Tile {
     return true;
   }
   isFallingStone(): boolean {
-    return this.falling;
+    return this.falling.isFalling();
   }
   isBox(): boolean {
     return false;
@@ -450,76 +484,7 @@ class Stone implements Tile {
     return false;
   }
   moveHorizontal(dx: number): void {
-    if (this.isFallingStone() == true) {
-    }
-  }
-}
-
-class FallingStone implements Tile {
-  private falling: boolean;
-  constructor(falling: boolean) {
-    this.falling = falling;
-  }
-
-  isAir(): boolean {
-    return false;
-  }
-  isPlayer(): boolean {
-    return false;
-  }
-  isFlux(): boolean {
-    return false;
-  }
-  isUnbreakable(): boolean {
-    return false;
-  }
-  isStone(): boolean {
-    return false;
-  }
-  isFallingStone(): boolean {
-    return this.falling;
-  }
-  isBox(): boolean {
-    return false;
-  }
-  isFallingBox(): boolean {
-    return false;
-  }
-  isKey1(): boolean {
-    return false;
-  }
-  isKey2(): boolean {
-    return false;
-  }
-  isLock1(): boolean {
-    return false;
-  }
-  isLock2(): boolean {
-    return false;
-  }
-  color(g: CanvasRenderingContext2D): void {
-    g.fillStyle = "#0000cc";
-  }
-  draw(g: CanvasRenderingContext2D, x: number, y: number): void {
-    g.fillStyle = "#0000cc";
-    g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  }
-  isEdible(): boolean {
-    return false;
-  }
-  isPushable(): boolean {
-    return false;
-  }
-  moveHorizontal(dx: number): void {
-    if (this.isFallingStone() == false) {
-      if (
-        map[playery][playerx + dx].isAir() &&
-        map[playery + 1][playerx + dx].isAir()
-      ) {
-        map[playery][playerx + dx + dx] = this;
-        moveToTile(playerx + dx, playery);
-      }
-    }
+    this.falling.moveHorizontal(this, dx);
   }
 }
 
@@ -852,13 +817,13 @@ function updateMap() {
 
 function updateTile(x: number, y: number) {
   if (map[y][x].isStone() && map[y + 1][x].isAir()) {
-    map[y + 1][x] = new FallingStone(false);
+    map[y + 1][x] = new Stone(new Falling());
     map[y][x] = new Air();
   } else if (map[y][x].isBox() && map[y + 1][x].isAir()) {
     map[y + 1][x] = new FallingBox();
     map[y][x] = new Air();
   } else if (map[y][x].isFallingStone()) {
-    map[y][x] = new Stone(true);
+    map[y][x] = new Stone(new Resting());
   } else if (map[y][x].isFallingBox()) {
     map[y][x] = new Box();
   }
