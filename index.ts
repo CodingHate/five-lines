@@ -219,9 +219,13 @@ interface Tile {
   isEdible(): boolean;
   isPushable(): boolean;
   moveHorizontal(dx: number): void;
+  drop(): void;
+  rest(): void;
 }
 
 class Air implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return true;
   }
@@ -272,6 +276,8 @@ class Air implements Tile {
 }
 
 class Player implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -320,6 +326,8 @@ class Player implements Tile {
 }
 
 class Unbreakable implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -373,6 +381,8 @@ class Unbreakable implements Tile {
 }
 
 class Flux implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -433,6 +443,12 @@ class Stone implements Tile {
   constructor(private falling: FallingState) {
     this.falling = falling;
   }
+  drop(): void {
+    this.falling = new Falling();
+  }
+  rest(): void {
+    this.falling = new Resting();
+  }
 
   isAir(): boolean {
     return false;
@@ -489,6 +505,8 @@ class Stone implements Tile {
 }
 
 class Box implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -550,6 +568,8 @@ class Box implements Tile {
 }
 
 class FallingBox implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -603,6 +623,8 @@ class FallingBox implements Tile {
 }
 
 class Key1 implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -659,6 +681,8 @@ class Key1 implements Tile {
 }
 
 class Key2 implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -707,6 +731,8 @@ class Key2 implements Tile {
 }
 
 class Lock1 implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -760,6 +786,8 @@ class Lock1 implements Tile {
 }
 
 class Lock2 implements Tile {
+  drop(): void {}
+  rest(): void {}
   isAir(): boolean {
     return false;
   }
@@ -816,16 +844,15 @@ function updateMap() {
 }
 
 function updateTile(x: number, y: number) {
-  if (map[y][x].isStone() && map[y + 1][x].isAir()) {
-    map[y + 1][x] = new Stone(new Falling());
+  if (
+    (map[y][x].isStone() && map[y + 1][x].isAir()) ||
+    (map[y][x].isBox() && map[y + 1][x].isAir())
+  ) {
+    map[y][x].drop();
+    map[y + 1][x] = map[y][x];
     map[y][x] = new Air();
-  } else if (map[y][x].isBox() && map[y + 1][x].isAir()) {
-    map[y + 1][x] = new FallingBox();
-    map[y][x] = new Air();
-  } else if (map[y][x].isFallingStone()) {
-    map[y][x] = new Stone(new Resting());
-  } else if (map[y][x].isFallingBox()) {
-    map[y][x] = new Box();
+  } else if (map[y][x].isFallingStone() || map[y][x].isFallingBox()) {
+    map[y][x].rest();
   }
 }
 
