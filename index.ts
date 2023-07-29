@@ -129,6 +129,23 @@ function transformTile(title: RawTile) {
   }
 }
 
+class Player {
+  private x = 1;
+  private y = 1;
+  getX() {
+    return this.x;
+  }
+  getY() {
+    return this.y;
+  }
+  setX(x: number) {
+    this.x = x;
+  }
+  setY(y: number) {
+    this.y = y;
+  }
+}
+
 function transformMap() {
   map = new Array(rawmap.length);
   for (let y = 0; y < rawmap.length; y++) {
@@ -160,9 +177,11 @@ function removeLock2() {
   }
 }
 
+let player = new Player();
+
 function moveToTile(newx: number, newy: number) {
-  map[playery][playerx] = new Air();
-  map[newy][newx] = new Player();
+  map[player.getY()][player.getX()] = new Air();
+  map[newy][newx] = new PlayerTile();
   playerx = newx;
   playery = newy;
 }
@@ -218,7 +237,8 @@ interface Tile {
   draw(g: CanvasRenderingContext2D, x: number, y: number): void;
   isEdible(): boolean;
   isPushable(): boolean;
-  moveHorizontal(dx: number): void;
+  moveHorizontal(dx: number, player: Player): void;
+  moveVertical(dy: number, player: Player): void;
   drop(): void;
   rest(): void;
 }
@@ -275,7 +295,7 @@ class Air implements Tile {
   }
 }
 
-class Player implements Tile {
+class PlayerTile implements Tile {
   drop(): void {}
   rest(): void {}
   isAir(): boolean {
